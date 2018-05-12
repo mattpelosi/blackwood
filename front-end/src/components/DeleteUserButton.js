@@ -14,12 +14,14 @@ class DeleteUserButton extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ user: nextProps.user });
+    if (nextProps.user.type === "updateUser") {
+      this.setState({ user: nextProps.user.data });
+    }
   }
 
   deleteUser() {
     dashboardService.deleteUser(this.state.user._id).then(() => {
-      this.props.deleteUser({ data: this.state.user, type: "delete" });
+      this.props.deleteUser({ data: this.state.user, type: "deleteUser" });
     });
   }
 

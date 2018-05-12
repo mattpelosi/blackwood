@@ -13,19 +13,22 @@ class UserList extends React.PureComponent {
   }
 
   componentDidMount() {
-    dashboardService.readAll().then(users => {
-      this.setState({ users: users });
-    });
+    dashboardService
+      .readAll()
+      .then(users => {
+        this.setState({ users: users });
+      })
+      .catch(err => console.log(err));
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.newUser.type === "newUser") {
+    if (nextProps.newUser.type === "addUser") {
       const updatedUsers = update(this.state.users, {
         $push: [nextProps.newUser.data]
       });
       this.setState({ users: updatedUsers });
     }
-    if (nextProps.newUser.type === "delete") {
+    if (nextProps.newUser.type === "deleteUser") {
       const updatedUsers = this.state.users.filter(user => {
         return user._id != nextProps.newUser.data._id;
       });
@@ -35,7 +38,7 @@ class UserList extends React.PureComponent {
 
   editUser(user) {
     user.edit = true;
-    this.props.user(user);
+    this.props.user({ data: user, type: "updateUser" });
   }
 
   mapUsers() {

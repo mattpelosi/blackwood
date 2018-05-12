@@ -1,8 +1,10 @@
 import React from "react";
 import CreateUserForm from "../components/CreateUserForm";
-import UserList from "../components/UserList";
 
-class Dashboard extends React.PureComponent {
+import UserList from "../components/UserList";
+import update from "immutability-helper";
+
+class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -11,7 +13,8 @@ class Dashboard extends React.PureComponent {
   }
 
   passUserThroughProps(userData) {
-    this.setState({ user: userData });
+    const data = update(this.state.user, { $set: userData });
+    this.setState({ user: data });
   }
 
   render() {
@@ -23,7 +26,7 @@ class Dashboard extends React.PureComponent {
           newUser={this.passUserThroughProps}
           deleteUser={this.passUserThroughProps}
         />
-        <UserList user={this.passUserThroughProps} newUser={this.state.user} />
+        {/* <UserList user={this.passUserThroughProps} newUser={this.state.user} /> */}
       </React.Fragment>
     );
   }
