@@ -2,174 +2,273 @@ import React from "react";
 import * as dashboardService from "../services/dashboard.service";
 import DeleteUserButton from "./DeleteUserButton";
 import update from "immutability-helper";
+import { flash, fadeIn } from "react-animations";
+import Radium, { StyleRoot } from "radium";
+import ReactTooltip from "react-tooltip";
 
 class CreateUserForm extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      userForm: {}
+      registerForm: {
+        email: {
+          value: "",
+          touched: false,
+          valid: false
+        },
+        password: {
+          value: "",
+          touched: false,
+          valid: false
+        },
+        passwordConfirm: {
+          value: "",
+          touched: false,
+          valid: false
+        }
+      },
+      passwordMatch: false,
+      formValid: false
     };
 
     this.onChange = this.onChange.bind(this);
-    this.createUser = this.createUser.bind(this);
-    this.updateUser = this.updateUser.bind(this);
-    this.resetForm = this.resetForm.bind(this);
+    this.registerUser = this.registerUser.bind(this);
+    this.validateFormInputs = this.validateFormInputs.bind(this);
+    this.passwordMatch = this.passwordMatch.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (
-      typeof nextProps.user != "undefined" &&
-      nextProps.user._id &&
-      nextProps.user._id.length > 0
-    ) {
-      this.setState(prevState => {
-        return {
-          ...prevState,
-          userForm: nextProps.user
-        };
-      });
+  validateFormInputs(event) {
+    const value = event.target.value;
+    const name = event.target.name;
+    const emailTest = /\S+@\S+\.\S+/;
+    const passwordTest = /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{6,}$/;
+    let formValid = false;
+    if (name === "email") {
+      formValid = emailTest.test(value);
     }
-    if (nextProps.user === "resetForm") {
-      this.setState({
-        userForm: {
-          email: "",
-          userName: ""
-        }
-      });
+    if (name === "password") {
+      formValid = passwordTest.test(value);
     }
-    if (nextProps.user.type === "updateUser") {
-      this.setState({
-        userForm: nextProps.user.data
+    if (name === "passwordConfirm") {
+      formValid = passwordTest.test(value);
+    }
+    if (value !== "") {
+      const validatedInput = update(this.state.registerForm, {
+        [name]: { valid: { $set: formValid }, touched: { $set: true } }
       });
+      this.setState({ registerForm: validatedInput });
+      this.passwordMatch();
     }
   }
 
   onChange(event) {
     const value = event.target.value;
     const name = event.target.name;
-    const udpatedForm = update(this.state.userForm, {
-      [name]: { $set: value }
+    const udpatedForm = update(this.state.registerForm, {
+      [name]: { value: { $set: value } }
     });
-    this.setState({ userForm: udpatedForm });
+    this.setState({ registerForm: udpatedForm });
+    if (value === "") {
+      const untouched = update(this.state.registerForm, {
+        [name]: { value: { $set: "" }, touched: { $set: false } }
+      });
+      this.setState({ registerForm: untouched });
+    }
   }
 
-  createUser() {
-    dashboardService
-      .create(this.state.userForm)
-      .then(userData => {
-        this.props.newUser({ data: userData, type: "addUser" });
-      })
-      .catch(err => console.log(err));
+  passwordMatch() {
+    let password = this.state.registerForm.password;
+    let passwordConfirm = this.state.registerForm.passwordConfirm;
+    if (
+      password.value !== "" &&
+      password.valid &&
+      passwordConfirm.value !== "" &&
+      password.valid &&
+      password.value === passwordConfirm.value
+    ) {
+      this.setState({ passwordMatch: true });
+    } else {
+      this.setState({ passwordMatch: false });
+    }
   }
 
-  updateUser() {
-    const userId = this.state.userForm._id;
-    const userData = {
-      userName: this.state.userForm.userName,
-      email: this.state.userForm.email
-    };
-    dashboardService.update(userId, userData).catch(err => console.log(err));
-  }
-
-  resetForm() {
-    this.props.resetForm("resetForm");
+  registerUser() {
+    if (!this.state.passwordMatch) {
+      //do something that indicates to the user that the passwords don't
+    } else {
+      dashboardService
+        .create(this.state.userForm)
+        .then(userData => {
+          this.props.newUser({ data: userData, type: "addUser" });
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   render() {
     return (
       <React.Fragment>
-        {/* <form className="form-signin">
-          <h1 className="h3 mb-3 font-weight-normal">Create a user</h1>
-          <label htmlFor="inputEmail" className="sr-only">
-            Email address
-          </label>
-          <input
-            type="email"
-            id="inputEmail"
-            className="form-control"
-            placeholder="Email address"
-            name="email"
-            onChange={this.onChange}
-            value={this.state.userForm.email}
-          />
-          <label htmlFor="inputPassword" className="sr-only">
-            UserName
-          </label>
-          <input
-            type="text"
-            id="inputPassword"
-            className="form-control"
-            placeholder="UserName"
-            name="userName"
-            onChange={this.onChange}
-            value={this.state.userForm.userName}
-          />
-
-          {!this.state.userForm.edit ? (
-            <button
-              onClick={this.createUser}
-              className="btn btn-lg btn-primary btn-block"
-              type="button"
-            >
-              Create
-            </button>
-          ) : (
-            <button
-              onClick={this.updateUser}
-              className="btn btn-lg btn-warning btn-block"
-              type="button"
-            >
-              Update User
-            </button>
-          )}
-          <button
-            onClick={this.resetForm}
-            className="btn btn-lg btn-default btn-block"
-            style={{ border: "1px black solid" }}
-            type="button"
-          >
-            Reset
-          </button>
-          <DeleteUserButton
-            user={{ data: this.state.userForm, type: "updateUser" }}
-            deleteUser={this.props.deleteUser}
-          />
-        </form> */}
-        <div className="login-dark" style={{ height: "100vh" }}>
-          <form method="post">
-            <h2 className="sr-only">Login Form</h2>
-            <div className="illustration">
-              <i className="icon ion-ios-locked-outline" />
-            </div>
-            <div className="form-group">
-              <input
-                className="form-control"
-                type="email"
-                name="email"
-                placeholder="Email"
-              />
-            </div>
-            <div className="form-group">
-              <input
-                className="form-control"
-                type="password"
-                name="password"
-                placeholder="Password"
-              />
-            </div>
-            <div className="form-group">
-              <button className="btn btn-primary btn-block" type="submit">
-                Log In
-              </button>
-            </div>
-            <a href="#" className="forgot">
-              Forgot your email or password?
-            </a>
-          </form>
-        </div>
+        <StyleRoot>
+          <div className="login-dark" style={{ height: "100vh" }}>
+            <form>
+              <div className="illustration">
+                <i className="icon ion-ios-locked-outline" />
+              </div>
+              <div className="form-group">
+                <div className="form-row">
+                  <div className="col-11">
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      className="form-control"
+                      value={this.state.registerForm.email.value}
+                      onChange={this.onChange}
+                      onBlur={this.validateFormInputs}
+                    />
+                  </div>
+                  {!this.state.registerForm.email.valid &&
+                  this.state.registerForm.email.touched ? (
+                    <div
+                      className="col-1"
+                      style={styles.flash}
+                      data-tip
+                      data-for="emailError"
+                    >
+                      <i
+                        className="icon ion-ios-close-empty"
+                        style={{ fontSize: "32px" }}
+                      />
+                      <ReactTooltip
+                        id="emailError"
+                        place="left"
+                        type="dark"
+                        effect="solid"
+                      >
+                        <p
+                          style={{
+                            fontSize: "11px",
+                            maxWidth: "200px"
+                          }}
+                        >
+                          Must enter a valid email address
+                        </p>
+                      </ReactTooltip>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+              <div className="form-group">
+                <div className="form-row">
+                  <div className="col-11">
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                      className="form-control"
+                      value={this.state.registerForm.password.value}
+                      onChange={this.onChange}
+                      onBlur={this.validateFormInputs}
+                    />
+                  </div>
+                  {!this.state.registerForm.password.valid &&
+                  this.state.registerForm.password.touched ? (
+                    <div
+                      className="col-1"
+                      style={styles.flash}
+                      data-tip
+                      data-for="passwordError"
+                    >
+                      <i
+                        className="icon ion-ios-close-empty"
+                        style={{ fontSize: "32px" }}
+                        datalacement="top"
+                      />
+                      <ReactTooltip
+                        id="passwordError"
+                        place="left"
+                        type="dark"
+                        effect="solid"
+                      >
+                        <p
+                          style={{
+                            fontSize: "11px",
+                            maxWidth: "200px"
+                          }}
+                        >
+                          Password must be at least 8 characters long and
+                          include one letter, one number, and one special
+                          character.
+                        </p>
+                      </ReactTooltip>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+              <div className="form-group">
+                <div className="form-row">
+                  <div className="col-11">
+                    <input
+                      type="password"
+                      name="passwordConfirm"
+                      placeholder="Confirm Password"
+                      className="form-control"
+                      value={this.state.registerForm.passwordConfirm.value}
+                      onChange={this.onChange}
+                      onBlur={this.validateFormInputs}
+                    />
+                  </div>
+                  {(!this.state.registerForm.passwordConfirm.valid &&
+                    this.state.registerForm.passwordConfirm.touched) ||
+                  (!this.state.passwordMatch &&
+                    this.state.registerForm.passwordConfirm.touched) ? (
+                    <div className="col-1" style={styles.flash}>
+                      <i
+                        className="icon ion-ios-close-empty"
+                        style={{ fontSize: "32px" }}
+                      />
+                    </div>
+                  ) : null}
+                </div>
+                {!this.state.passwordMatch &&
+                this.state.registerForm.passwordConfirm.touched ? (
+                  <div
+                    className="row"
+                    id="password-error"
+                    style={styles.fadeIn}
+                  >
+                    <div className="col">
+                      <p className="text-right">Passwords must match</p>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <button className="btn btn-primary btn-block" type="submit">
+                  Register
+                </button>
+              </div>
+              {/* <a href="#" className="forgot">
+                Forgot your email or password?
+              </a> */}
+            </form>
+          </div>
+        </StyleRoot>
       </React.Fragment>
     );
   }
 }
 
 export default CreateUserForm;
+
+const styles = {
+  flash: {
+    animation: "2s",
+    // animationDelay: "1s",
+    animationName: Radium.keyframes(flash, "bounce")
+  },
+  fadeIn: {
+    animation: "2s",
+    animationName: Radium.keyframes(fadeIn, "fadeIn")
+  }
+};
