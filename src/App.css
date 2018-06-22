@@ -1,0 +1,150 @@
+@import url(https://use.fontawesome.com/releases/v5.0.13/css/all.css);
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.Landing-page {
+  display: flex;
+  flex-direction: column;
+  background: black;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.Login-form {
+  display: flex;
+  height: 240px;
+  width: 400px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #505763;
+  padding: 15px;
+  border-radius: 5px;
+  animation: fadeIn 2s ease-in 1 forwards;
+  transition: border 1s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Login-form:hover {
+  border: 1px solid white;
+}
+
+.Register-input {
+  font-family: Andale Mono, AndaleMono, monospace;
+  color: #d0d8e0;
+  font-size: 1em;
+  height: 20%;
+  align-self: stretch;
+  margin: 2px;
+  padding: 4px;
+  border: 1px solid black;
+  border-radius: 3px;
+  background: black;
+  border: 1px solid #505763;
+  transition: border 1s;
+  outline: none;
+}
+
+.Register-input::placeholder {
+  color: #949ea8;
+}
+
+.Register-input:hover {
+  border: 1px solid #bdc4cc;
+}
+
+.Register-button {
+  font-family: Andale Mono, AndaleMono, monospace;
+  font-size: 1.5em;
+  color: #939aa1;
+  height: 22%;
+  align-self: stretch;
+  padding: 4px;
+  margin: 2px;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 3px;
+  background: #343638;
+  text-shadow: unset;
+  transition-property: text-shadow, color;
+  transition-duration: 1s;
+  outline: none;
+}
+
+.Register-button:hover {
+  color: white;
+}
+
+.Register-button:active {
+  border: 1px solid #898b8e;
+}
+
+.Valid-info {
+  position: relative;
+  width: 0;
+  height: 0;
+  bottom: 2.2em;
+  left: 10em;
+  color: #38393d;
+  transition-property: color;
+  transition-duration: 1s;
+}
+
+.Valid-info:hover {
+  color: #777982;
+}
+
+.Form-help {
+  position: relative;
+  font-family: Andale Mono, AndaleMono, monospace;
+  text-align: center;
+  color: #d0d8e0;
+  height: 0;
+  width: 400px;
+  bottom: 4em;
+}
+
+.Form-help-enter {
+  opacity: 0.01;
+}
+
+.Form-help-enter-active {
+  opacity: 1;
+  transition: all 1s ease-in;
+}
+
+.Form-help-exit-active {
+  opacity: 0;
+  transition: all 1s ease-out;
+}
+
+.sign-in {
+  color: #aeb9c5;
+  height: 1em;
+  margin: 0;
+  font-family: Andale Mono, AndaleMono, monospace;
+  opacity: 0.6;
+  transition-property: opacity;
+  transition-duration: 1s;
+}
+
+.sign-in:hover {
+  opacity: 1;
+  cursor: default; 
+}
+
+.sign-in:active {
+  color: rgb(216, 204, 204);
+}
