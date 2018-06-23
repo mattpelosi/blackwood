@@ -111,12 +111,12 @@ class LoginForm extends React.PureComponent {
       email: "Please enter a valid email address",
       password:
         "Your password must have at least 8 characters, one number, and one of the following: !@#$%^&*",
-      confirmPassword: "Your passwords don't match"
+      passwordConfirm: "Your passwords don't match"
     };
     let message = "";
     field === "email" && (message = help.email);
     field === "password" && (message = help.password);
-    field === "confirm-password" && (message = help.confirmPassword);
+    field === "passwordConfirm" && (message = help.passwordConfirm);
     this.setState({
       showFormHelp: true,
       formHelpMessage: message
