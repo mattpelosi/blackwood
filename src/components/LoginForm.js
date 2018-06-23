@@ -53,9 +53,11 @@ class LoginForm extends React.PureComponent {
       });
       this.setState({ registerForm: untouched });
     }
+    this.validateFormInputs(event);
   }
 
   validateFormInputs(event) {
+    // debugger;
     const value = event.target.value;
     const field = event.target.name;
     const regex = {
@@ -67,22 +69,30 @@ class LoginForm extends React.PureComponent {
     field === "password" && (formValid = regex.passwordTest.test(value));
     if (value !== "") {
       const validatedInput = update(this.state.registerForm, {
-        [field]: { valid: { $set: formValid }, touched: { $set: true } }
+        [field]: {
+          value: { $set: value },
+          valid: { $set: formValid },
+          touched: { $set: true }
+        }
       });
-      this.setState({ registerForm: validatedInput });
+      this.setState({ registerForm: validatedInput }, () => {
+        this.passwordMatch();
+      });
     }
-    field === "passwordConfirm" && this.passwordMatch();
   }
 
   passwordMatch() {
     const password = this.state.registerForm.password.value;
     const passwordConfirm = this.state.registerForm.passwordConfirm.value;
     if (password === passwordConfirm) {
-      this.setState({ passwordMatch: true });
+      this.setState({ passwordMatch: true }, () => {
+        this.isFormValid();
+      });
     } else {
-      this.setState({ passwordMatch: false });
+      this.setState({ passwordMatch: false }, () => {
+        this.isFormValid();
+      });
     }
-    this.isFormValid();
   }
 
   isFormValid() {
@@ -92,6 +102,8 @@ class LoginForm extends React.PureComponent {
       this.state.passwordMatch
     ) {
       this.setState({ formValid: true });
+    } else {
+      this.setState({ formValid: false });
     }
   }
 
@@ -111,12 +123,12 @@ class LoginForm extends React.PureComponent {
       email: "Please enter a valid email address",
       password:
         "Your password must have at least 8 characters, one number, and one of the following: !@#$%^&*",
-      confirmPassword: "Your passwords don't match"
+      passwordConfirm: "Your passwords don't match"
     };
     let message = "";
     field === "email" && (message = help.email);
     field === "password" && (message = help.password);
-    field === "confirm-password" && (message = help.confirmPassword);
+    field === "passwordConfirm" && (message = help.passwordConfirm);
     this.setState({
       showFormHelp: true,
       formHelpMessage: message
@@ -144,7 +156,7 @@ class LoginForm extends React.PureComponent {
             placeholder={this.state.registerForm[input].placeholder}
             value={this.state.registerForm[key].value}
             onChange={this.onChange}
-            onBlur={this.validateFormInputs}
+            // onBlur={this.validateFormInputs}
           />
 
           {(key === "passwordConfirm"

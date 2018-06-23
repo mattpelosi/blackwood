@@ -74,17 +74,19 @@ body {
   align-self: stretch;
   padding: 4px;
   margin: 2px;
-  border: 1px solid rgb(0, 0, 0);
+  border: 1px solid rgb(80, 74, 74);
   border-radius: 3px;
   background: #343638;
   text-shadow: unset;
-  transition-property: text-shadow, color;
+  transition-property: text-shadow, color, opacity;
   transition-duration: 1s;
   outline: none;
+  opacity: .5;
 }
 
 .Register-button:hover {
   color: white;
+  opacity: 1; 
 }
 
 .Register-button:active {
@@ -135,7 +137,7 @@ body {
   height: 1em;
   margin: 0;
   font-family: Andale Mono, AndaleMono, monospace;
-  opacity: 0.6;
+  opacity: 0.5;
   transition-property: opacity;
   transition-duration: 1s;
 }
