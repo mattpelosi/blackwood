@@ -11,17 +11,19 @@ class LoginForm extends React.PureComponent {
         email: {
           value: "",
           touched: false,
-          valid: false
+          valid: false,
+          placeholder: "Email"
         },
         password: {
           value: "",
           touched: false,
-          valid: false
+          valid: false,
+          placeholder: "Password"
         },
         passwordConfirm: {
           value: "",
           touched: false,
-          valid: false
+          placeholder: "Confirm Password"
         }
       },
       passwordMatch: false,
@@ -30,31 +32,12 @@ class LoginForm extends React.PureComponent {
     };
 
     this.onChange = this.onChange.bind(this);
-    this.registerUser = this.registerUser.bind(this);
+    // this.registerUser = this.registerUser.bind(this);
     this.validateFormInputs = this.validateFormInputs.bind(this);
+    this.isFormValid = this.isFormValid.bind(this);
     this.passwordMatch = this.passwordMatch.bind(this);
     this.showFormHelp = this.showFormHelp.bind(this);
     this.hideFormHelp = this.hideFormHelp.bind(this);
-  }
-
-  validateFormInputs(event) {
-    const value = event.target.value;
-    const field = event.target.name;
-    const regex = {
-      emailTest: /\S+@\S+\.\S+/,
-      passwordTest: /^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/
-    };
-    let formValid = false;
-    field === "email" && (formValid = regex.emailTest.test(value));
-    debugger;
-    field === "password" && (formValid = regex.passwordTest.test(value));
-    if (value !== "") {
-      const validatedInput = update(this.state.registerForm, {
-        [field]: { valid: { $set: formValid }, touched: { $set: true } }
-      });
-      this.setState({ registerForm: validatedInput });
-    }
-    field === "passwordConfirm" && this.passwordMatch();
   }
 
   onChange(event) {
@@ -72,31 +55,56 @@ class LoginForm extends React.PureComponent {
     }
   }
 
+  validateFormInputs(event) {
+    const value = event.target.value;
+    const field = event.target.name;
+    const regex = {
+      emailTest: /\S+@\S+\.\S+/,
+      passwordTest: /^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/
+    };
+    let formValid = false;
+    field === "email" && (formValid = regex.emailTest.test(value));
+    field === "password" && (formValid = regex.passwordTest.test(value));
+    if (value !== "") {
+      const validatedInput = update(this.state.registerForm, {
+        [field]: { valid: { $set: formValid }, touched: { $set: true } }
+      });
+      this.setState({ registerForm: validatedInput });
+    }
+    field === "passwordConfirm" && this.passwordMatch();
+  }
+
   passwordMatch() {
     const password = this.state.registerForm.password.value;
     const passwordConfirm = this.state.registerForm.passwordConfirm.value;
-    if (
-      password.value !== "" &&
-      password.valid &&
-      passwordConfirm.value !== "" &&
-      password.value === passwordConfirm.value
-    ) {
+    if (password === passwordConfirm) {
       this.setState({ passwordMatch: true });
     } else {
       this.setState({ passwordMatch: false });
     }
+    this.isFormValid();
   }
 
-  registerUser(event) {
-    event.preventDefault();
-    if (this.state.passwordMatch) {
-      const user = {
-        email: this.state.registerForm.email.value,
-        password: this.state.registerForm.password.value
-      };
-      //   usersService.create(user).catch(err => console.log(err));
+  isFormValid() {
+    if (
+      this.state.registerForm.email.valid &&
+      this.state.registerForm.password.valid &&
+      this.state.passwordMatch
+    ) {
+      this.setState({ formValid: true });
     }
   }
+
+  // registerUser(event) {
+  //   event.preventDefault();
+  //   if (this.state.passwordMatch) {
+  //     const user = {
+  //       email: this.state.registerForm.email.value,
+  //       password: this.state.registerForm.password.value
+  //     };
+  //       usersService.create(user).catch(err => console.log(err));
+  //   }
+  // }
 
   showFormHelp(field) {
     let help = {
@@ -122,6 +130,38 @@ class LoginForm extends React.PureComponent {
   }
 
   render() {
+    const inputFields = [];
+    let loopIndex = 0;
+
+    for (let input in this.state.registerForm) {
+      const key = input.replace(/"/g, "");
+      inputFields.push(
+        <React.Fragment key={loopIndex++}>
+          <input
+            className="Register-input"
+            type={input === "email" ? "text" : "password"}
+            name={input}
+            placeholder={this.state.registerForm[input].placeholder}
+            value={this.state.registerForm[key].value}
+            onChange={this.onChange}
+            onBlur={this.validateFormInputs}
+          />
+
+          {(key === "passwordConfirm"
+            ? !this.state.passwordMatch
+            : !this.state.registerForm[key].valid) &&
+            this.state.registerForm[key].touched && (
+              <i
+                name={input}
+                className="Valid-info fa fa-exclamation-triangle"
+                onMouseEnter={this.showFormHelp.bind(this, input)}
+                onMouseLeave={this.hideFormHelp}
+              />
+            )}
+        </React.Fragment>
+      );
+    }
+
     return (
       <React.Fragment>
         <div className="Form-help">
@@ -135,62 +175,12 @@ class LoginForm extends React.PureComponent {
           </CSSTransition>
         </div>
         <div className="Login-form">
-          <input
-            className="Register-input"
-            type="text"
-            name="email"
-            placeholder="Email"
-            value={this.state.registerForm.email.value}
-            onChange={this.onChange}
-            onBlur={this.validateFormInputs}
-          />
-          {!this.state.registerForm.email.valid &&
-            this.state.registerForm.email.touched && (
-              <i
-                name="email"
-                className="Valid-info fa fa-exclamation-triangle"
-                onMouseEnter={this.showFormHelp.bind(this, "email")}
-                onMouseLeave={this.hideFormHelp}
-              />
-            )}
-          <input
-            className="Register-input"
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={this.state.registerForm.password.value}
-            onChange={this.onChange}
-            onBlur={this.validateFormInputs}
-          />
-          {!this.state.registerForm.password.valid &&
-            this.state.registerForm.password.touched && (
-              <i
-                name="password"
-                className="Valid-info fa fa-exclamation-triangle"
-                onMouseEnter={this.showFormHelp.bind(this, "password")}
-                onMouseLeave={this.hideFormHelp}
-              />
-            )}
-
-          <input
-            className="Register-input"
-            type="password"
-            name="passwordConfirm"
-            placeholder="Confirm Password"
-            value={this.state.registerForm.passwordConfirm.value}
-            onChange={this.onChange}
-            onBlur={this.validateFormInputs}
-          />
-          {!this.state.passwordMatch &&
-            this.state.registerForm.passwordConfirm.touched && (
-              <i
-                name="confirm-password"
-                className="Valid-info fa fa-exclamation-triangle"
-                onMouseEnter={this.showFormHelp.bind(this, "confirm-password")}
-                onMouseLeave={this.hideFormHelp}
-              />
-            )}
-          <button className="Register-button" onClick={this.registerUser}>
+          {inputFields}
+          <button
+            className="Register-button"
+            onClick={this.registerUser}
+            disabled={!this.state.formValid}
+          >
             Register
           </button>
           <p className="sign-in">- Sign in -</p>
