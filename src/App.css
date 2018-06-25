@@ -15,7 +15,7 @@ body {
   justify-content: center;
 }
 
-.Login-form {
+.register-form {
   display: flex;
   height: 240px;
   width: 400px;
@@ -38,7 +38,7 @@ body {
   }
 }
 
-.Login-form:hover {
+.register-form:hover {
   border: 1px solid white;
 }
 

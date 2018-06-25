@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import './App.css';
-import {Router} from 'react-router-dom'
-import LoginForm from './components/LoginForm.js'
-import createBrowserHistory from 'history/createBrowserHistory'
+import React, { Component } from "react";
+import "./App.css";
+import { Router } from "react-router-dom";
+import RegisterForm from "./components/RegisterForm.js";
+import createBrowserHistory from "history/createBrowserHistory";
 
-const history = createBrowserHistory()
+const history = createBrowserHistory();
 
 class App extends Component {
   render() {
     return (
       <div className="Landing-page">
         <Router history={history}>
-          <LoginForm/>
+          <RegisterForm />
         </Router>
       </div>
     );
