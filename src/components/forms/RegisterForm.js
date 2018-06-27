@@ -45,6 +45,8 @@ class RegisterForm extends React.PureComponent {
 
     this.showFormHelp = this.showFormHelp.bind(this);
     this.hideFormHelp = this.hideFormHelp.bind(this);
+
+    this.setMode = this.setMode.bind(this);
   }
 
   onChange(event) {
@@ -148,13 +150,20 @@ class RegisterForm extends React.PureComponent {
     });
   }
 
+  setMode() {
+    if (this.state.mode === "Login") {
+      this.setState({ mode: "Register" });
+    } else {
+      this.setState({ mode: "Login" });
+    }
+  }
+
   render() {
     const inputFields = [];
     let loopIndex = 0;
 
     for (let input in this.state.registerForm) {
       const key = input.replace(/"/g, "");
-      debugger;
       if (this.state.registerForm[input].mode.includes(this.state.mode)) {
         inputFields.push(
           <React.Fragment key={loopIndex++}>
@@ -165,7 +174,6 @@ class RegisterForm extends React.PureComponent {
               placeholder={this.state.registerForm[input].placeholder}
               value={this.state.registerForm[key].value}
               onChange={this.onChange}
-              // onBlur={this.validateFormInputs}
             />
 
             {(key === "passwordConfirm"
@@ -206,7 +214,9 @@ class RegisterForm extends React.PureComponent {
             {this.state.mode}
           </button>
           <p className="sign-in">
-            - {this.state.mode === "Login" ? "Register" : "Login"}-
+            <a onClick={this.setMode}>
+              - {this.state.mode === "Login" ? "Register" : "Login"}-
+            </a>
           </p>
         </div>
       </React.Fragment>

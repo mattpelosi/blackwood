@@ -135,11 +135,14 @@ body {
 .sign-in {
   color: #aeb9c5;
   height: 1em;
-  margin: 0;
+  margin-top: 10px;
+  margin-bottom:0;
   font-family: Andale Mono, AndaleMono, monospace;
   opacity: 0.5;
   transition-property: opacity;
   transition-duration: 1s;
+  justify-content: center;
+  align-items: center;
 }
 
 .sign-in:hover {
