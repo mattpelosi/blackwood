@@ -15,7 +15,7 @@ body {
   justify-content: center;
 }
 
-.Login-form {
+.register-form {
   display: flex;
   height: 240px;
   width: 400px;
@@ -38,7 +38,7 @@ body {
   }
 }
 
-.Login-form:hover {
+.register-form:hover {
   border: 1px solid white;
 }
 
@@ -135,11 +135,14 @@ body {
 .sign-in {
   color: #aeb9c5;
   height: 1em;
-  margin: 0;
+  margin-top: 10px;
+  margin-bottom:0;
   font-family: Andale Mono, AndaleMono, monospace;
   opacity: 0.5;
   transition-property: opacity;
   transition-duration: 1s;
+  justify-content: center;
+  align-items: center;
 }
 
 .sign-in:hover {

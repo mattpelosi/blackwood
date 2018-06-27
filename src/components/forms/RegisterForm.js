@@ -3,7 +3,7 @@ import React from "react";
 import update from "immutability-helper";
 import { CSSTransition } from "react-transition-group";
 
-class LoginForm extends React.PureComponent {
+class RegisterForm extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,32 +12,41 @@ class LoginForm extends React.PureComponent {
           value: "",
           touched: false,
           valid: false,
-          placeholder: "Email"
+          placeholder: "Email",
+          mode: ["Login", "Register"]
         },
         password: {
           value: "",
           touched: false,
           valid: false,
-          placeholder: "Password"
+          placeholder: "Password",
+          mode: ["Login", "Register"]
         },
         passwordConfirm: {
           value: "",
           touched: false,
-          placeholder: "Confirm Password"
+          placeholder: "Confirm Password",
+          mode: ["Register"]
         }
       },
       passwordMatch: false,
       formValid: false,
-      showFormmHelp: false
+      showFormmHelp: false,
+      mode: "Login"
     };
 
     this.onChange = this.onChange.bind(this);
-    // this.registerUser = this.registerUser.bind(this);
     this.validateFormInputs = this.validateFormInputs.bind(this);
-    this.isFormValid = this.isFormValid.bind(this);
     this.passwordMatch = this.passwordMatch.bind(this);
+    this.isFormValid = this.isFormValid.bind(this);
+
+    //this.registerUser = this.registerUser.bind(this);
+    //this.loginUser = this.loginUser.bind(this);
+
     this.showFormHelp = this.showFormHelp.bind(this);
     this.hideFormHelp = this.hideFormHelp.bind(this);
+
+    this.setMode = this.setMode.bind(this);
   }
 
   onChange(event) {
@@ -141,37 +150,46 @@ class LoginForm extends React.PureComponent {
     });
   }
 
+  setMode() {
+    if (this.state.mode === "Login") {
+      this.setState({ mode: "Register" });
+    } else {
+      this.setState({ mode: "Login" });
+    }
+  }
+
   render() {
     const inputFields = [];
     let loopIndex = 0;
 
     for (let input in this.state.registerForm) {
       const key = input.replace(/"/g, "");
-      inputFields.push(
-        <React.Fragment key={loopIndex++}>
-          <input
-            className="Register-input"
-            type={input === "email" ? "text" : "password"}
-            name={input}
-            placeholder={this.state.registerForm[input].placeholder}
-            value={this.state.registerForm[key].value}
-            onChange={this.onChange}
-            // onBlur={this.validateFormInputs}
-          />
+      if (this.state.registerForm[input].mode.includes(this.state.mode)) {
+        inputFields.push(
+          <React.Fragment key={loopIndex++}>
+            <input
+              className="Register-input"
+              type={input === "email" ? "text" : "password"}
+              name={input}
+              placeholder={this.state.registerForm[input].placeholder}
+              value={this.state.registerForm[key].value}
+              onChange={this.onChange}
+            />
 
-          {(key === "passwordConfirm"
-            ? !this.state.passwordMatch
-            : !this.state.registerForm[key].valid) &&
-            this.state.registerForm[key].touched && (
-              <i
-                name={input}
-                className="Valid-info fa fa-exclamation-triangle"
-                onMouseEnter={this.showFormHelp.bind(this, input)}
-                onMouseLeave={this.hideFormHelp}
-              />
-            )}
-        </React.Fragment>
-      );
+            {(key === "passwordConfirm"
+              ? !this.state.passwordMatch
+              : !this.state.registerForm[key].valid) &&
+              this.state.registerForm[key].touched && (
+                <i
+                  name={input}
+                  className="Valid-info fa fa-exclamation-triangle"
+                  onMouseEnter={this.showFormHelp.bind(this, input)}
+                  onMouseLeave={this.hideFormHelp}
+                />
+              )}
+          </React.Fragment>
+        );
+      }
     }
 
     return (
@@ -186,20 +204,24 @@ class LoginForm extends React.PureComponent {
             <span>{this.state.formHelpMessage}</span>
           </CSSTransition>
         </div>
-        <div className="Login-form">
+        <div className="register-form">
           {inputFields}
           <button
             className="Register-button"
             onClick={this.registerUser}
             disabled={!this.state.formValid}
           >
-            Register
+            {this.state.mode}
           </button>
-          <p className="sign-in">- Sign in -</p>
+          <p className="sign-in">
+            <a onClick={this.setMode}>
+              - {this.state.mode === "Login" ? "Register" : "Login"}-
+            </a>
+          </p>
         </div>
       </React.Fragment>
     );
   }
 }
 
-export default LoginForm;
+export default RegisterForm;
