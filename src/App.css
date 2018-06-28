@@ -5,7 +5,7 @@ body {
   padding: 0;
 }
 
-.Landing-page {
+/* .Landing-page {
   display: flex;
   flex-direction: column;
   background: black;
@@ -13,7 +13,7 @@ body {
   width: 100vw;
   align-items: center;
   justify-content: center;
-}
+} */
 
 .register-form {
   display: flex;
