@@ -1,7 +1,6 @@
 import update from "immutability-helper";
 
 function validateFormInputs(event) {
-  debugger;
   const value = event.target.value;
   const field = event.target.name;
   const regex = {
@@ -19,7 +18,6 @@ function validateFormInputs(event) {
         touched: { $set: true }
       }
     });
-    debugger;
     this.setState({ registerForm: validatedInput }, () => {
       passwordMatch.call(this);
     });
@@ -52,4 +50,31 @@ function isFormValid() {
   }
 }
 
+function validate(form) {
+  let isValid = null;
+  for (const field in form) {
+    switch (field) {
+      case "email":
+        const regex = RegExp(/\S+@\S+\.\S+/);
+        isValid = regex.test(form[field]);
+
+        break;
+      case "password":
+        form[field];
+
+        break;
+      case "passwordConfirm":
+        form[field];
+
+        break;
+      default:
+    }
+  }
+  const newForm = update(form, {
+    isValid: { $set: isValid }
+  });
+  this.setState(() => newForm);
+}
+
 export { validateFormInputs };
+export { validate };

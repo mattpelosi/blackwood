@@ -1,6 +1,6 @@
 import React from "react";
 import RegisterForm from "../components/forms/RegisterForm";
-import LoginForm from "../components/forms/LoginForm";
+import LoginForm from "../components/forms/_LoginForm";
 import './landing.page.css'
 
 class LandingPage extends React.Component {

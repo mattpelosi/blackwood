@@ -9,7 +9,7 @@ class Email extends React.Component {
     return (
       <React.Fragment>
         <div />
-      </React.Fragment>
+    </React.Fragment>
     );
   }
 }

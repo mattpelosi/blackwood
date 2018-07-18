@@ -3,6 +3,7 @@ import React from "react";
 import update from "immutability-helper";
 import { CSSTransition } from "react-transition-group";
 import { validateFormInputs } from "../../services/validation";
+import Password from "../inputs/Password";
 
 class RegisterForm extends React.PureComponent {
   constructor(props) {
@@ -38,7 +39,6 @@ class RegisterForm extends React.PureComponent {
 
     this.showFormHelp = this.showFormHelp.bind(this);
     this.hideFormHelp = this.hideFormHelp.bind(this);
-    // this.validateFormInputs = this.validateFormInputs.bind(this)
     this.setMode = this.setMode.bind(this);
   }
 
@@ -55,60 +55,8 @@ class RegisterForm extends React.PureComponent {
       });
       this.setState({ registerForm: untouched });
     }
-    debugger;
     validateFormInputs.call(this, event);
   };
-
-  // validateFormInputs = event => {
-  //   // debugger;
-  //   const value = event.target.value;
-  //   const field = event.target.name;
-  //   const regex = {
-  //     emailTest: /\S+@\S+\.\S+/,
-  //     passwordTest: /^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/
-  //   };
-  //   let formValid = false;
-  //   field === "email" && (formValid = regex.emailTest.test(value));
-  //   field === "password" && (formValid = regex.passwordTest.test(value));
-  //   if (value !== "") {
-  //     const validatedInput = update(this.state.registerForm, {
-  //       [field]: {
-  //         value: { $set: value },
-  //         valid: { $set: formValid },
-  //         touched: { $set: true }
-  //       }
-  //     });
-  //     this.setState({ registerForm: validatedInput }, () => {
-  //       this.passwordMatch();
-  //     });
-  //   }
-  // };
-
-  // passwordMatch = () => {
-  //   const password = this.state.registerForm.password.value;
-  //   const passwordConfirm = this.state.registerForm.passwordConfirm.value;
-  //   if (password === passwordConfirm) {
-  //     this.setState({ passwordMatch: true }, () => {
-  //       this.isFormValid();
-  //     });
-  //   } else {
-  //     this.setState({ passwordMatch: false }, () => {
-  //       this.isFormValid();
-  //     });
-  //   }
-  // };
-
-  // isFormValid = () => {
-  //   if (
-  //     this.state.registerForm.email.valid &&
-  //     this.state.registerForm.password.valid &&
-  //     this.state.passwordMatch
-  //   ) {
-  //     this.setState({ formValid: true });
-  //   } else {
-  //     this.setState({ formValid: false });
-  //   }
-  // };
 
   showFormHelp(field) {
     let help = {
@@ -189,6 +137,7 @@ class RegisterForm extends React.PureComponent {
         </div>
         <div className="register-form">
           {inputFields}
+          <Password/>
           <button
             className="Register-button"
             onClick={this.registerUser}
