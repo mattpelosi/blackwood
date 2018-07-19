@@ -19,7 +19,11 @@ class LoginForm extends React.Component {
     const newState = update(this.state, {
       [field]: { $set: value }
     });
-    validate.call(this, newState);
+    const { isValid, errorMessages } = validate.call(this, newState);
+    newState.isValid = isValid;
+    newState.errorMessages = errorMessages;
+    debugger;
+    this.setState(() => newState);
   };
 
   submitForm = () => {
