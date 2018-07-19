@@ -1,4 +1,7 @@
 import React from "react";
+import update from "immutability-helper";
+import { validate } from "../../services/validation.js";
+import { Form, Button, Input, P } from "./_RegisterForm.styles.js";
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -6,6 +9,7 @@ class LoginForm extends React.Component {
     this.state = {
       email: "",
       password: "",
+      passwordConfirm: "",
       isValid: false
     };
   }
@@ -13,29 +17,52 @@ class LoginForm extends React.Component {
   onChange = event => {
     const value = event.target.value;
     const field = event.target.name;
-    this.setState({
-      [field]: value
+    const newState = update(this.state, {
+      [field]: { $set: value }
     });
+    const { isValid, errorMessages } = validate(newState);
+    newState.isValid = isValid;
+    newState.errorMessages = errorMessages;
+    this.setState(() => newState);
+  };
+
+  submitForm = () => {
+    if (this.state.isValid) {
+      //submit form to server
+    }
   };
 
   render() {
     const { email, password, passwordConfirm } = this.state;
 
     return (
-      <React.Fragment>
-        <input
+      <Form>
+        <Input
           type="email"
           name="email"
+          placeholder="Email"
           value={email}
           onChange={this.onChange}
         />
-        <input
+        <Input
           type="password"
           name="password"
+          placeholder="Password"
           value={password}
           onChange={this.onChange}
         />
-      </React.Fragment>
+        <Input
+          type="password"
+          name="passwordConfirm"
+          placeholder="Confirm Password"
+          value={passwordConfirm}
+          onChange={this.onChange}
+        />
+        <Button onClick={this.submitLogin}>Login</Button>
+        <P>
+          <a>Register</a>
+        </P>
+      </Form>
     );
   }
 }

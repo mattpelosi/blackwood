@@ -1,7 +1,7 @@
 import React from "react";
-import RegisterForm from "../components/forms/RegisterForm";
-import LoginForm from "../components/forms/_LoginForm";
-import './landing.page.css'
+// import  from "../components/forms/RegisterForm";
+import RegisterForm from "../components/forms/_RegisterForm";
+import "./landing.page.css";
 
 class LandingPage extends React.Component {
   state = {};
@@ -9,7 +9,6 @@ class LandingPage extends React.Component {
     return (
       <div className="Landing-page">
         <RegisterForm />
-        <LoginForm />
       </div>
     );
   }
