@@ -1,4 +1,13 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const fadeIn = keyframes`
+from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 const Form = styled.div`
   display: flex;
@@ -10,7 +19,7 @@ const Form = styled.div`
   border: 1px solid #505763;
   padding: 15px;
   border-radius: 5px;
-  animation: fadeIn 2s ease-in 1 forwards;
+  animation: ${fadeIn} 2s ease-in 1 forwards;
   transition: border 1s;
 `;
 

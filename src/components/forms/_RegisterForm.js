@@ -29,6 +29,8 @@ class LoginForm extends React.Component {
   submitForm = () => {
     if (this.state.isValid) {
       //submit form to server
+    } else {
+
     }
   };
 

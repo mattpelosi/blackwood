@@ -47,7 +47,11 @@ function validate(form) {
 
         break;
       case "passwordConfirm":
-        if (form.password === form.passwordConfirm) {
+        if (
+          errorMessages.length === 0 &&
+          form.password !== "" &&
+          form.password === form.passwordConfirm
+        ) {
           isValid = true;
         } else {
           isValid = false;
