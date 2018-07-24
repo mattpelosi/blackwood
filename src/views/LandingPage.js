@@ -1,15 +1,15 @@
 import React from "react";
 // import  from "../components/forms/RegisterForm";
 import RegisterForm from "../components/forms/_RegisterForm";
-import "./landing.page.css";
+import { FormWrapper } from "./LandingPage.styles.js";
 
 class LandingPage extends React.Component {
   state = {};
   render() {
     return (
-      <div className="Landing-page">
+      <FormWrapper>
         <RegisterForm />
-      </div>
+      </FormWrapper>
     );
   }
 }
