@@ -1,4 +1,7 @@
-.Landing-page {
+import styled from 'styled-components'
+
+const FormWrapper = styled.div`
+    
     display: flex;
     flex-direction: column;
     background: black;
@@ -6,4 +9,7 @@
     width: 100vw;
     align-items: center;
     justify-content: center;
-  }
+  
+`;
+
+export {FormWrapper}
