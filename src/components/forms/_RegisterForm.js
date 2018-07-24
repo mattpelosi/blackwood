@@ -2,6 +2,8 @@ import React from "react";
 import update from "immutability-helper";
 import { validate } from "../../services/validation.js";
 import { Form, Button, Input, P } from "./_RegisterForm.styles.js";
+import { connect } from "react-redux";
+import { addErrorMessages } from "../../actions/registerForm.js";
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -22,15 +24,13 @@ class LoginForm extends React.Component {
     });
     const { isValid, errorMessages } = validate(newState);
     newState.isValid = isValid;
-    newState.errorMessages = errorMessages;
-    this.setState(() => newState);
+    this.setState(() => newState, this.props.addErrorMessages(errorMessages));
   };
 
   submitForm = () => {
     if (this.state.isValid) {
       //submit form to server
     } else {
-
     }
   };
 
@@ -69,4 +69,13 @@ class LoginForm extends React.Component {
   }
 }
 
-export default LoginForm;
+const mapDispatchToProps = dispatch => ({
+  addErrorMessages: errors => {
+    dispatch(addErrorMessages(errors));
+  }
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(LoginForm);

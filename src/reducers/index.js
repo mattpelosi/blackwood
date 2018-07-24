@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import registerForm from "./registerForm.js";
+import registerFormData from "./registerForm.js";
 
 export default combineReducers({
-    registerForm
-})
+  registerFormData
+});
