@@ -8,6 +8,12 @@ const formData = (state = {}, action) => {
       });
       return newState;
     }
+    case "SHOULD_DISPLAY_ERRORS": {
+      const newState = update(state, {
+        shouldDisplayErrors: { $set: action.shouldDisplayErrors }
+      });
+      return newState;
+    }
     default:
       return state;
   }

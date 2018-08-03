@@ -3,7 +3,10 @@ import update from "immutability-helper";
 import { validate } from "../../services/validation.js";
 import { Form, Button, Input, P } from "./_RegisterForm.styles.js";
 import { connect } from "react-redux";
-import { addErrorMessages } from "../../actions/registerForm.js";
+import {
+  addErrorMessages,
+  shouldDisplayErrors
+} from "../../actions/registerForm.js";
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -31,6 +34,7 @@ class LoginForm extends React.Component {
     if (this.state.isValid) {
       //submit form to server
     } else {
+      this.props.shouldDisplayErrors(true);
     }
   };
 
@@ -60,7 +64,7 @@ class LoginForm extends React.Component {
           value={passwordConfirm}
           onChange={this.onChange}
         />
-        <Button onClick={this.submitLogin}>Login</Button>
+        <Button onClick={this.submitForm}>Login</Button>
         <P>
           <a>Register</a>
         </P>
@@ -72,6 +76,9 @@ class LoginForm extends React.Component {
 const mapDispatchToProps = dispatch => ({
   addErrorMessages: errors => {
     dispatch(addErrorMessages(errors));
+  },
+  shouldDisplayErrors: bool => {
+    dispatch(shouldDisplayErrors(bool));
   }
 });
 
