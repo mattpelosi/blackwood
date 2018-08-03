@@ -1,43 +1,46 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import { connect } from "react-redux";
-import { CSSTransition } from "react-transition-group";
+// import update from "immutability-helper";
 
 class ErrorMessages extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      shouldDisplayMessage: false
-    };
+    this.state = {};
   }
 
-  // componentDidUpdate(prevProps) {
-  //   this.props.errorMessages;
-  // }
-
-  shouldDisplayMessage = val => {
-    this.setState({ shouldDisplayMessage: val });
+  shouldDisplayMessage = (val, index) => {
+    this.setState({
+      shouldDisplayMessage: val,
+      index: index
+    });
   };
 
   render() {
-    const { errors, shouldDisplayErrors } = this.props;
-    const { shouldDisplayMessage } = this.state;
-    if (!shouldDisplayErrors) {
-      return null;
+    const { shouldDisplayMessage, index } = this.state;
+    const { shouldDisplayErrors, errorMessages } = this.props;
+
+    if (!shouldDisplayErrors || !errorMessages) {
+      return <Box />;
     }
 
     return (
       <Box>
         <ErrorIcons>
-          <i
-            className="fa fa-exclamation-triangle"
-            onMouseEnter={() => this.shouldDisplayMessage(true)}
-            onMouseLeave={() => this.shouldDisplayMessage(false)}
-          />
+          {errorMessages.map((error, index) => {
+            return (
+              <i
+                name={index}
+                className="fa fa-exclamation-triangle"
+                onMouseEnter={() => this.shouldDisplayMessage(true, index)}
+                onMouseLeave={() => this.shouldDisplayMessage(false, index)}
+              />
+            );
+          })}
         </ErrorIcons>
         <Errors>
           <Message show={shouldDisplayMessage} hide={!shouldDisplayMessage}>
-            Data
+            {errorMessages[index]}
           </Message>
         </Errors>
       </Box>
@@ -73,27 +76,32 @@ to {
 `;
 
 const Box = styled.div`
-  animation: ${fadeIn} 2s ease-in 1 forwards;
+  animation: ${fadeIn} 1s ease-in 1 forwards;
   display: flex;
   flex-direction: column;
-  border: 1px solid #505763;
+  /* border: 1px solid #505763; */
   padding: 15px;
   color: white;
+  width: 400px;
+  height: 50px;
 `;
 
 const ErrorIcons = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-evenly;
   align-items: center;
-  border: 1px solid #505763;
-  height: 50px;
-  height: 50px;
+  /* border: 1px solid #505763; */
+  width: auto;
+  color: #949ea8;
 `;
 
 const Errors = styled.div`
-  border: 1px solid #505763;
+  display: flex;
+  justify-content: center;
   height: 50px;
-  height: 50px;
+  /* border: 1px solid #505763; */
+  color: #949ea8;
 `;
 
 const Message = styled.p`
@@ -104,6 +112,7 @@ const Message = styled.p`
   `} ${({ hide }) =>
     hide &&
     `
-    animation: ${fadeOut} 1s ease-in 1 forwards;
+    animation: ${fadeOut} .5s ease-in 1 forwards;
   `};
+  text-align: center;
 `;
