@@ -21,6 +21,11 @@ const Form = styled.div`
   border-radius: 5px;
   animation: ${fadeIn} 2s ease-in 1 forwards;
   transition: border 1s;
+  opacity: 0.5;
+
+  &:hover {
+    border: 1px solid #bdc4cc;
+  }
 `;
 
 const Button = styled.button`
