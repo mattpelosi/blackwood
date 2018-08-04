@@ -5,3 +5,9 @@ export const addErrorMessages = errors => ({
   errors,
   index: index++
 });
+
+export const shouldDisplayErrors = shouldDisplayErrors => ({
+  type: "SHOULD_DISPLAY_ERRORS",
+  shouldDisplayErrors,
+  index: index++
+});
