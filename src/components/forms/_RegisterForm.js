@@ -8,14 +8,13 @@ import {
   shouldDisplayErrors
 } from "../../actions/registerForm.js";
 
-class LoginForm extends React.Component {
+class RegisterForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
-      passwordConfirm: "",
-      isValid: false
+      passwordConfirm: ""
     };
   }
 
@@ -39,10 +38,10 @@ class LoginForm extends React.Component {
   };
 
   render() {
-    const { email, password, passwordConfirm } = this.state;
+    const { email, password, passwordConfirm, isValid } = this.state;
 
     return (
-      <Form>
+      <Form isValid={isValid}>
         <Input
           type="email"
           name="email"
@@ -64,9 +63,9 @@ class LoginForm extends React.Component {
           value={passwordConfirm}
           onChange={this.onChange}
         />
-        <Button onClick={this.submitForm}>Login</Button>
+        <Button onClick={this.submitForm}>Register</Button>
         <P>
-          <a>Register</a>
+          <a>Login</a>
         </P>
       </Form>
     );
@@ -85,4 +84,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   null,
   mapDispatchToProps
-)(LoginForm);
+)(RegisterForm);

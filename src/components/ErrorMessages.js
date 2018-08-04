@@ -9,9 +9,9 @@ class ErrorMessages extends React.Component {
     this.state = {};
   }
 
-  shouldDisplayMessage = (val, index) => {
+  shouldDisplayMessage = (bool, index) => {
     this.setState({
-      shouldDisplayMessage: val,
+      shouldDisplayMessage: bool,
       index: index
     });
   };
@@ -30,7 +30,7 @@ class ErrorMessages extends React.Component {
           {errorMessages.map((error, index) => {
             return (
               <i
-                name={index}
+                key={index}
                 className="fa fa-exclamation-triangle"
                 onMouseEnter={() => this.shouldDisplayMessage(true, index)}
                 onMouseLeave={() => this.shouldDisplayMessage(false, index)}
@@ -76,10 +76,8 @@ to {
 `;
 
 const Box = styled.div`
-  animation: ${fadeIn} 1s ease-in 1 forwards;
   display: flex;
   flex-direction: column;
-  /* border: 1px solid #505763; */
   padding: 15px;
   color: white;
   width: 400px;
@@ -91,16 +89,15 @@ const ErrorIcons = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  /* border: 1px solid #505763; */
   width: auto;
   color: #949ea8;
+  animation: ${fadeIn} 1s ease-in 1 forwards;
 `;
 
 const Errors = styled.div`
   display: flex;
   justify-content: center;
   height: 50px;
-  /* border: 1px solid #505763; */
   color: #949ea8;
 `;
 

@@ -7,34 +7,34 @@ function validate(form) {
       case "email":
         const regexEmail = RegExp(/\S+@\S+\.\S+/);
         isValid = regexEmail.test(form[field]);
-        !isValid && errorMessages.push("Please enter a valid email.");
+        !isValid && errorMessages.push("Your email isn't valid.");
         break;
       case "password":
         const tests = {
           regexDigit: {
             condition: RegExp(/(\d)/g),
-            message: "Must have at least one number."
+            message: "Password needs a number."
           },
           regexUpper: {
             condition: RegExp(/[A-Z]+/g),
-            message: "Must have at least one uppercase letter."
+            message: "Password's missing an uppercase letter."
           },
           regexLower: {
             condition: RegExp(/[a-z]+/g),
-            message: "Must have at least one lowercase letter."
+            message: "Password's missing a lowercase letter."
           },
           regexSpecialIn: {
             condition: RegExp(/[!@#$%^&*]+/g),
             message:
-              "Must include at least one of the follow characters: !@#$%^&*"
+              "Password needs one of the following characters: !@#$%^&*"
           },
           regexSpecialOut: {
             condition: RegExp(/[^()<>\{\}\[\]\\\/]/gi),
-            message: "Cannot include the following characters <>{}[]()/|"
+            message: "Password can't have any of these characters <>{}[]()/|"
           },
           regeexLength: {
             condition: RegExp(/.{8,32}/g),
-            message: "Must be no less than 8 and no more than 32 in length."
+            message: "Password's length has gotta be between 8 and 32 characters."
           }
         };
 
@@ -53,9 +53,9 @@ function validate(form) {
           form.password === form.passwordConfirm
         ) {
           isValid = true;
-        } else {
-          isValid = false;
+        } else if (form.password !== form.passwordConfirm) {
           errorMessages.push("Passwords don't match");
+          isValid = false;
         }
         break;
       default:
