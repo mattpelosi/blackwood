@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import { connect } from "react-redux";
-// import update from "immutability-helper";
+import update from "immutability-helper";
 
 class ErrorMessages extends React.Component {
   constructor(props) {
