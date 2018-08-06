@@ -22,7 +22,7 @@ class ErrorMessages extends React.Component {
 
     if (!shouldDisplayErrors || !errorMessages) {
       return <Box />;
-    }
+    } 
 
     return (
       <Box>
