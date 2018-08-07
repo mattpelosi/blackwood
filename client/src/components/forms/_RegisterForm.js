@@ -7,6 +7,7 @@ import {
   addErrorMessages,
   shouldDisplayErrors
 } from "../../actions/registerForm.js";
+import * as userRequests from "../../HTTPRequests/user.requests.js";
 
 class RegisterForm extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ class RegisterForm extends React.Component {
 
   submitForm = () => {
     if (this.state.isValid) {
-      //submit form to server
+      userRequests.registerUser(this.state);
     } else {
       this.props.shouldDisplayErrors(true);
     }
