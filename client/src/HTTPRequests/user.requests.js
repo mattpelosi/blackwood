@@ -1,15 +1,14 @@
 import axios from "axios";
-import axiosInstance from "../../config/axios.config.js";
 
 export function registerUser(formData) {
   const config = {
-    method: "POST",
+    method: "post",
+    url: `api/users/register`,
     data: formData
   };
-  axios
-    .create(`/api/register-user`, config)
+  axios(config)
     .then(result => {
-      console.log(result);
+      console.log(result.data);
     })
     .catch(err => {
       throw new Error(err);
