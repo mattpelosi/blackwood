@@ -20,6 +20,10 @@
   },
   "homepage": "https://github.com/mattpelosi/blackwood#readme",
   "dependencies": {
-    "express": "^4.16.3"
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "mongodb": "^3.1.1"
   }
 }
