@@ -11,8 +11,6 @@ app.use(router);
 
 mongo.connect(process.env.MONGODB_URL);
 
-console.log(conn.db());
-
 process.on("unhandledRejection", error => {
   console.log("unhandled rejection", error);
 });

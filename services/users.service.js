@@ -1,8 +1,13 @@
+const conn = require("../mongodb").connection;
+
 module.exports = {
   registerUser: registerUser
 };
 
-function registerUser(formData) {
-  console.log("connected");
-  return Promise.resolve(formData);
+async function registerUser(formData) {
+  const result = await conn
+    .db()
+    .collection("users")
+    .insertOne(formData);
+  return result.insertedId;
 }

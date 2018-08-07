@@ -7,10 +7,14 @@ function connect(url) {
     return Promise.resolve(_db);
   }
 
-  return MongoClient.connect(
+  MongoClient.connect(
     url,
-    { useNewUrlParser: true }
-  ).then(client => (_db = client));
+    { useNewUrlParser: true },
+    (err, client) => {
+      if (err) throw err;
+      _db = client.db("the-blackwood");
+    }
+  );
 }
 
 module.exports = {
