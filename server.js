@@ -4,12 +4,12 @@ const app = express();
 const mongo = require("./mongodb.js");
 const conn = mongo.connection;
 const bodyParser = require("body-parser");
+require("dotenv").config();
 
 app.use(bodyParser.json());
 app.use(router);
 
-const url = `mongodb://mpelosi1:STE1nwaY1!@ds020208.mlab.com:20208/the-blackwood`;
-mongo.connect(url);
+mongo.connect(process.env.MONGODB_URL);
 
 console.log(conn.db());
 
