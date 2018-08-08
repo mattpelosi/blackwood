@@ -20,11 +20,15 @@ const Form = styled.div`
   padding: 15px;
   border-radius: 5px;
   animation: ${fadeIn} 2s ease-in 1 forwards;
-  transition: border 1s;
+  transition-property: border, transform;
+  transition-duration: 1s;
   opacity: 0.5;
+  box-shadow: 0 3px 5px 3px #505763;
+  transform: rotateX(20deg) translate3d(0, 0, 0);
 
   &:hover {
     border: 1px solid #bdc4cc;
+    transform: translate3d(-0.1em, -2em, 3em) rotateX(20deg);
   }
 `;
 
@@ -69,6 +73,7 @@ const Input = styled.input`
   border: 1px solid #505763;
   transition: border 1s;
   outline: none;
+  /* transform: rotateX(10deg); */
 
   &:placeholder {
     color: #949ea8;
