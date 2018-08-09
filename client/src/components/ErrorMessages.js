@@ -22,14 +22,14 @@ class ErrorMessages extends React.Component {
 
     if (!shouldDisplayErrors || !errorMessages) {
       return <Box />;
-    } 
+    }
 
     return (
       <Box>
         <ErrorIcons>
           {errorMessages.map((error, index) => {
             return (
-              <i
+              <Icon
                 key={index}
                 className="fa fa-exclamation-triangle"
                 onMouseEnter={() => this.shouldDisplayMessage(true, index)}
@@ -82,6 +82,13 @@ const Box = styled.div`
   color: white;
   width: 400px;
   height: 50px;
+  transform: rotateX(20deg) rotateY(10deg);
+  transition-property: transform;
+  transition-duration: 1s;
+
+  &:hover {
+    transform: translate3d(-0.1em, -1em, 3em) rotateX(20deg) rotateY(10deg);
+  }
 `;
 
 const ErrorIcons = styled.div`
@@ -92,6 +99,19 @@ const ErrorIcons = styled.div`
   width: auto;
   color: #949ea8;
   animation: ${fadeIn} 1s ease-in 1 forwards;
+`;
+
+const Icon = styled.i`
+  height: 45px;
+  width: 45px;
+
+
+  &::before {
+    position: relative;
+    left: 0.8em;
+    top: 0.8em;
+    color: #B84932;
+  }
 `;
 
 const Errors = styled.div`
@@ -105,11 +125,11 @@ const Message = styled.p`
   ${({ show }) =>
     show &&
     `
-    animation: ${fadeIn} 1s ease-in 1 forwards;
+    animation: ${fadeIn} 0.5s ease-in 1 forwards;
   `} ${({ hide }) =>
     hide &&
     `
-    animation: ${fadeOut} .5s ease-in 1 forwards;
+    animation: ${fadeOut} 0.5s ease-in 1 forwards;
   `};
   text-align: center;
 `;

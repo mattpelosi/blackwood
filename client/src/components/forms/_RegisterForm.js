@@ -27,7 +27,7 @@ class RegisterForm extends React.Component {
     });
     const { isValid, errorMessages } = validate(newState);
     newState.isValid = isValid;
-    this.setState(() => newState, this.props.addErrorMessages(errorMessages));
+    this.setState(newState, this.props.addErrorMessages(errorMessages));
   };
 
   submitForm = () => {
@@ -37,6 +37,10 @@ class RegisterForm extends React.Component {
       this.props.shouldDisplayErrors(true);
     }
   };
+
+  // changeInputDepth = e => {
+  //   e.key === "Enter" && this.setState({ number: e.target.value });
+  // };
 
   render() {
     const { email, password, passwordConfirm, isValid } = this.state;
@@ -49,6 +53,7 @@ class RegisterForm extends React.Component {
           placeholder="Email"
           value={email}
           onChange={this.onChange}
+          // depth={number}
         />
         <Input
           type="password"
@@ -64,10 +69,13 @@ class RegisterForm extends React.Component {
           value={passwordConfirm}
           onChange={this.onChange}
         />
-        <Button onClick={this.submitForm}>Register</Button>
+        <Button isValid={isValid} onClick={this.submitForm}>
+          Register
+        </Button>
         <P>
           <a>Login</a>
         </P>
+        {/* <input type="number" onKeyPress={this.changeInputDepth} /> */}
       </Form>
     );
   }
