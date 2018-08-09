@@ -11,6 +11,6 @@ export function registerUser(formData) {
       console.log(result.data);
     })
     .catch(err => {
-      throw new Error(err);
+      console.log(new Error(err));
     });
 }
