@@ -12,6 +12,7 @@ app.use(router);
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
+console.log(__dirname + "/client/build/index.html")
 
 const url = process.env.MONGODB_URL
 console.log(url);
