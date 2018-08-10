@@ -9,7 +9,9 @@ require("dotenv").config();
 app.use(bodyParser.json());
 app.use(router);
 
-mongo.connect(process.env.MONGODB_URL);
+const url = process.env.MONGODB_URL
+
+mongo.connect(url);
 
 process.on("unhandledRejection", error => {
   console.log("unhandled rejection", error);

@@ -11,7 +11,7 @@ function connect(url) {
     url,
     { useNewUrlParser: true },
     (err, client) => {
-      if (err) throw err;
+      if (err) console.log(new Error(err));
       _db = client.db("the-blackwood");
     }
   );
