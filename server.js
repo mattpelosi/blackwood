@@ -10,7 +10,7 @@ require("dotenv").config();
 app.use(bodyParser.json());
 app.use(router);
 
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 console.log(__dirname + "/client/build/index.html");
