@@ -3,22 +3,19 @@ const router = require("./routes");
 const app = express();
 const mongo = require("./mongodb.js");
 const path = require("path");
-// const conn = mongo.connection;
 const bodyParser = require("body-parser");
 require("dotenv").config();
 
 app.use(bodyParser.json());
+
+app.use(express.static(path.join(__dirname, "client/build")));
 app.use(router);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
-console.log(__dirname + "/client/build/index.html");
 
-const url = process.env.MONGODB_URL;
-console.log(url);
-
-mongo.connect(url);
+mongo.connect(process.env.MONGODB_URL);
 
 process.on("unhandledRejection", error => {
   console.log("unhandled rejection", error);
