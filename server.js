@@ -2,7 +2,7 @@ const express = require("express");
 const router = require("./routes");
 const app = express();
 const mongo = require("./mongodb.js");
-const conn = mongo.connection;
+// const conn = mongo.connection;
 const bodyParser = require("body-parser");
 require("dotenv").config();
 
