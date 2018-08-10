@@ -31,8 +31,9 @@ class RegisterForm extends React.Component {
   };
 
   submitForm = () => {
+    const { email, password } = this.state;
     if (this.state.isValid) {
-      userRequests.registerUser(this.state);
+      userRequests.registerUser({ email: email, password: password });
     } else {
       this.props.shouldDisplayErrors(true);
     }
